@@ -1,16 +1,21 @@
 from rest_framework import serializers
+
+from commerce.serializers import BidSerializer, CommentSerializer, ListingSerializer
 from .models import User
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth.password_validation import validate_password
 
 
-class UserSerializer(serializers.HyperlinkedModelSerializer):
-    # listings = serializers.HyperlinkedRelatedField(
-    #     many=True, view_name='listing_detail', read_only=True)
+class UserSerializer(serializers.ModelSerializer):
+
+    listings = ListingSerializer(many=True)
+    comments = CommentSerializer(many=True)
+    bids = BidSerializer(many=True)
 
     class Meta:
         model = User
-        fields = ['id', 'username', 'first_name', 'last_name', ]
+        fields = ['id', 'username', 'first_name',
+                  'last_name', 'listings', 'comments', 'bids']
 
 
 class RegisterSerializer(serializers.ModelSerializer):

@@ -31,7 +31,7 @@ class Listing(models.Model):
 
         from django.db.models import Max
         top_bid_amount = self.bids.aggregate(
-            Max('bid_amount')).get("bid_amound__max")
+            Max('bid_amount')).get("bid_amount__max")
         top_bid = self.bids.get(listing_id=self.id, bid_amount=top_bid_amount)
         return top_bid
 
