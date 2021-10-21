@@ -5,6 +5,7 @@ from commerce.models import Bid, Comment, Listing
 
 
 class CommentSerializer(serializers.ModelSerializer):
+    comment_id = serializers.ReadOnlyField(source='id')
     author = serializers.ReadOnlyField(source='author.username')
     author_id = serializers.ReadOnlyField(source='author.id')
     datetime = serializers.ReadOnlyField()
@@ -14,7 +15,7 @@ class CommentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Comment
-        fields = ['author', 'author_id', 'body', 'listing',
+        fields = ['comment_id', 'author', 'author_id', 'body', 'listing',
                   'listing_id', 'datetime']
 
 
