@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from rest_framework.fields import SerializerMethodField
 
-from commerce.models import Bid, Comment, Listing
+from commerce.models import Bid, Category, Comment, Listing
 
 
 class CommentSerializer(serializers.ModelSerializer):
@@ -57,6 +57,13 @@ class BidSerializer(serializers.ModelSerializer):
     class Meta:
         model = Bid
         fields = ['listing_id', 'creator', 'creator_id', 'bid_amount']
+
+
+class CategorySerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Category
+        fields = ['id','name','listings']
 
 
 class ListingSerializer(serializers.ModelSerializer):

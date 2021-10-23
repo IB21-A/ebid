@@ -2,8 +2,8 @@ from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework import viewsets
 from rest_framework import permissions
-from .models import Bid, Listing, Comment
-from .serializers import BidSerializer, ListingSerializer, CommentSerializer
+from .models import Bid, Category, Listing, Comment
+from .serializers import BidSerializer, CategorySerializer, ListingSerializer, CommentSerializer
 from .permissions import IsOwnerOrReadOnly
 
 # Create your views here.
@@ -27,6 +27,14 @@ class CommentViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
+
+
+# TODO add an admin or read only class
+class CategoryViewSet(viewsets.ModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
 
 
 class BidViewSet(viewsets.ModelViewSet):
