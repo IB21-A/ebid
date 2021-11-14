@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from rest_framework.fields import SerializerMethodField
-
-from commerce.models import Bid, Category, Comment, Listing
+from commerce.models import Bid, Category, Comment, Listing, Watching
 
 
 class CommentSerializer(serializers.ModelSerializer):
@@ -60,16 +59,49 @@ class BidSerializer(serializers.ModelSerializer):
 
 
 class CategorySerializer(serializers.ModelSerializer):
-    
+
     class Meta:
         model = Category
-        fields = ['id','name','listings']
+        fields = ['id', 'name', 'listings']
+
+
+class WatchingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Watching
+        fields = ['user_id', 'listing_id']
+
+
+class UserWatchingSerializer(serializers.ModelSerializer):
+    def to_representation(self, data):
+        data = data.filter(
+            user_id=self.context['request'].user, edition__hide=False)
+        return super(UserWatchingSerializer, self).to_representation(data)
+
+    class Meta:
+        model = Watching
+        fields = ['user_id', 'listing_id']
 
 
 class ListingSerializer(serializers.ModelSerializer):
     def sort_bids_highest_to_lowest(self, instance):
         bids = instance.bids.order_by('-bid_amount')
         return BidSerializer(bids, many=True).data
+
+    def followed_by_user(self, instance):
+        user = self.context['request'].user
+        listing_id = instance.id
+        try:
+            return user.watching.filter(listing_id=listing_id).exists()
+        except:
+            return False
+
+    # def followed_by_user(self, instance):
+    #     user_id = self.context['request'].user.id
+    #     listing_id = instance.id
+    #     try:
+    #         return Watching.objects.filter(user_id=user_id, listing_id=listing_id).exists()
+    #     except:
+    #         return False
 
     creator = serializers.ReadOnlyField(source='creator.username')
     creator_id = serializers.ReadOnlyField(source='creator.id')
@@ -79,8 +111,9 @@ class ListingSerializer(serializers.ModelSerializer):
     num_of_unique_bids = serializers.ReadOnlyField(
         source='get_num_of_unique_bids')
     current_bid_price = serializers.ReadOnlyField(source='get_current_price')
+    user_is_following = SerializerMethodField(method_name='followed_by_user')
 
     class Meta:
         model = Listing
         fields = ['id', 'creator', 'creator_id', 'title', 'description', 'start_bid',
-                  'creation_date', 'is_active', 'winner', 'category', 'image_url', 'comments', 'bids', 'num_of_bids', 'num_of_unique_bids', 'current_bid_price']
+                  'creation_date', 'is_active', 'winner', 'category', 'image_url', 'comments', 'bids', 'num_of_bids', 'num_of_unique_bids', 'current_bid_price', 'user_is_following']

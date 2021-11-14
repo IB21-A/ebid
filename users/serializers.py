@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from commerce.serializers import BidSerializer, CommentSerializer, ListingSerializer
+from commerce.serializers import BidSerializer, CommentSerializer, ListingSerializer, WatchingSerializer
 from .models import User
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth.password_validation import validate_password
@@ -11,11 +11,14 @@ class UserSerializer(serializers.ModelSerializer):
     listings = ListingSerializer(many=True)
     comments = CommentSerializer(many=True)
     bids = BidSerializer(many=True)
+    # watching = WatchingSerializer(many=True)
 
     class Meta:
         model = User
         fields = ['id', 'username', 'first_name',
-                  'last_name', 'listings', 'comments', 'bids']
+                  'last_name', 'listings', 'comments', 'bids', 'watching']
+
+
 
 
 class RegisterSerializer(serializers.ModelSerializer):

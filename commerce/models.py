@@ -100,3 +100,6 @@ class Watching(models.Model):
         User, on_delete=models.CASCADE, related_name="watching")
     listing_id = models.ForeignKey(
         Listing, on_delete=models.CASCADE, related_name="watching")
+
+    def __str__(self):
+        return f"{self.user_id} is watching {self.listing_id.id}: {self.listing_id}"

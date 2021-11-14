@@ -1,10 +1,12 @@
+from django.db.models.query import QuerySet
 from django.shortcuts import render
+from rest_framework.decorators import permission_classes
 from rest_framework.response import Response
 from rest_framework import viewsets
 from rest_framework import permissions
-from .models import Bid, Category, Listing, Comment
-from .serializers import BidSerializer, CategorySerializer, ListingSerializer, CommentSerializer
-from .permissions import IsOwnerOrReadOnly
+from .models import Bid, Category, Listing, Comment, Watching
+from .serializers import BidSerializer, CategorySerializer, ListingSerializer, CommentSerializer, WatchingSerializer
+from .permissions import IsOwnerOrReadOnly, IsOwner
 
 # Create your views here.
 
@@ -45,3 +47,9 @@ class BidViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(creator=self.request.user)
+
+
+class WatchingViewSet(viewsets.ModelViewSet):
+    queryset = Watching.objects.all()
+    serializer_class = WatchingSerializer
+    permission_classes = [permissions.AllowAny]
