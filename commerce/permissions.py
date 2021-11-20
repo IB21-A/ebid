@@ -23,6 +23,9 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
         if hasattr(obj, 'author'):
             return (obj.author == request.user)
 
+        if hasattr(obj, 'user_id'):
+            return (obj.user_id == request.user.id)
+
 
 class IsOwner(permissions.BasePermission):
     # TODO add Admin access check. Currently only returns user.

@@ -66,6 +66,8 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class WatchingSerializer(serializers.ModelSerializer):
+    user_id = serializers.ReadOnlyField(source='user_id.id')
+    listing_id = serializers.ReadOnlyField(source='listing_id.id')
     class Meta:
         model = Watching
         fields = ['user_id', 'listing_id']
@@ -92,7 +94,7 @@ class ListingSerializer(serializers.ModelSerializer):
         listing_id = instance.id
         try:
             return user.watching.filter(listing_id=listing_id).exists()
-        except:
+        except Exception:
             return False
 
     # def followed_by_user(self, instance):
