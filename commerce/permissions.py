@@ -24,7 +24,8 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
             return (obj.author == request.user)
 
         if hasattr(obj, 'user_id'):
-            return (obj.user_id == request.user.id)
+            print('Permission:', obj.user_id == request.user)
+            return (obj.user_id == request.user)
 
 
 class IsOwner(permissions.BasePermission):

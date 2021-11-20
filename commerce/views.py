@@ -54,14 +54,15 @@ class BidViewSet(viewsets.ModelViewSet):
 class WatchingViewSet(viewsets.ModelViewSet):
     queryset = Watching.objects.all()
     serializer_class = WatchingSerializer
-    permission_classes = [IsOwnerOrReadOnly]
+    permission_classes = [permissions.AllowAny]
 
     def create(self, request):
         user = request.user
+
         listing = Listing(id=request.data['listing_id'])
         instance = Watching(user_id=user, listing_id=listing)
         watching_listing = get_object_or_None(
-            Watching.objects.all(), user_id=request.data['user_id'], listing_id=request.data['listing_id'])
+            Watching.objects.all(), user_id=request.user.id, listing_id=request.data['listing_id'])
         if watching_listing is None:
             serializer = WatchingSerializer(
                 instance=instance, data=request.data)
@@ -75,3 +76,16 @@ class WatchingViewSet(viewsets.ModelViewSet):
         watching_listing.delete()
 
         return Response({"message": f"{watching_listing.listing_id} removed from watch list"}, status=status.HTTP_200_OK)
+
+    # def destroy(self, request):
+    #     user_id = request.user.id
+    #     print(request.user)
+    #     # listing = Listing(id=request.data['listing_id'])
+    #     watching_listing = get_object_or_None(
+    #         Watching.objects.all(), user_id=user_id, listing_id=request.data['listing_id'])
+
+    #     if watching_listing is None:
+    #         return Response({"message": f"User is already not currently watching {watching_listing.listing_id}"}, status=status.HTTP_400_BAD_REQUEST)
+
+    #     watching_listing.delete()
+    #     return Response({"message": f"{watching_listing.listing_id} removed from watch list"}, status=status.HTTP_200_OK)
