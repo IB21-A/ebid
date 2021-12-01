@@ -2,7 +2,7 @@ from django.db.models.query import QuerySet
 from django.shortcuts import get_object_or_404, render
 from rest_framework.decorators import permission_classes
 from rest_framework.response import Response
-from rest_framework import serializers, viewsets
+from rest_framework import filters, viewsets
 from rest_framework import permissions
 from rest_framework import status
 from .models import Bid, Category, Listing, Comment, Watching
@@ -15,6 +15,8 @@ from .custom_helpers import get_object_or_None
 
 
 class ListingViewSet(viewsets.ModelViewSet):
+    search_fields = ['title','description']
+    filter_backends = (filters.SearchFilter,)
     queryset = Listing.objects.order_by('-creation_date')
     serializer_class = ListingSerializer
     permission_classes = [
