@@ -38,7 +38,7 @@ class CommentViewSet(viewsets.ModelViewSet):
 
 # TODO add an admin or read only class
 class CategoryViewSet(viewsets.ModelViewSet):
-    queryset = Category.objects.all()
+    queryset = Category.objects.order_by('name')
     serializer_class = CategorySerializer
     permission_classes = [permissions.DjangoModelPermissionsOrAnonReadOnly]
     pagination_class = None
