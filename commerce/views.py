@@ -41,6 +41,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
     permission_classes = [permissions.DjangoModelPermissionsOrAnonReadOnly]
+    pagination_class = None
 
 
 class BidViewSet(viewsets.ModelViewSet):
