@@ -117,5 +117,7 @@ class ListingSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Listing
+        extra_kwargs = {"category": {"error_messages": {
+            "null": "Please select a category"}}}
         fields = ['id', 'creator', 'creator_id', 'title', 'description', 'start_bid',
                   'creation_date', 'is_active', 'winner', 'category', 'image_url', 'comments', 'bids', 'num_of_bids', 'num_of_unique_bids', 'current_bid_price', 'user_is_following']

@@ -18,7 +18,7 @@ class Listing(models.Model):
     image_url = models.URLField(blank=True)
     description = models.TextField()
     category = models.ForeignKey(
-        Category, on_delete=models.PROTECT, related_name="listings", blank=True, null=True)
+        Category, on_delete=models.PROTECT, related_name="listings")
     start_bid = models.DecimalField(max_digits=9, decimal_places=2)
     creation_date = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
