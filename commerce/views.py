@@ -5,11 +5,12 @@ from rest_framework.response import Response
 from rest_framework import filters, viewsets
 from rest_framework import permissions
 from rest_framework import status
-from .models import Bid, Category, Listing, Comment, Watching
-from .serializers import BidSerializer, CategorySerializer, ListingSerializer, CommentSerializer, WatchingSerializer
+from rest_framework.parsers import MultiPartParser, FormParser
+from .models import Bid, Category, Listing, Comment, UserUploadedImage, Watching
+from .serializers import BidSerializer, CategorySerializer, ListingSerializer, CommentSerializer, WatchingSerializer, UserUploadedImageSerializer
 from .permissions import IsOwnerOrReadOnly, IsOwner
 from .custom_helpers import get_object_or_None
-
+from users.models import User
 
 # Create your views here.
 
@@ -19,11 +20,20 @@ class ListingViewSet(viewsets.ModelViewSet):
     filter_backends = (filters.SearchFilter,)
     queryset = Listing.objects.order_by('-creation_date')
     serializer_class = ListingSerializer
+    parser_classes = (MultiPartParser, FormParser)
     permission_classes = [
         permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
+    permission_classes = [permissions.AllowAny, ]
 
     def perform_create(self, serializer):
         serializer.save(creator=self.request.user)
+
+    #Debug Perform_create only
+    # def perform_create(self, serializer):
+    #     serializer.save(creator=User.objects.get(pk=1))
+
+
+
 
 
 class CommentViewSet(viewsets.ModelViewSet):
@@ -53,6 +63,21 @@ class BidViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(creator=self.request.user)
 
+
+class UserImagesViewSet(viewsets.ModelViewSet):
+    queryset = UserUploadedImage.objects.all()
+    serializer_class = UserUploadedImageSerializer
+    permission_classes = [
+        permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
+    permission_classes = [
+        permissions.AllowAny]
+
+    # def perform_create(self, serializer):
+    #     serializer.save(creator=self.request.user)
+
+    # Debug, DELETE ME
+    def perform_create(self, serializer):
+        serializer.save(creator=User.objects.get(pk=1))
 
 class WatchingViewSet(viewsets.ModelViewSet):
     queryset = Watching.objects.all()
