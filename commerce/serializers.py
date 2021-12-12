@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from rest_framework.fields import SerializerMethodField
-from commerce.models import Bid, Category, Comment, Listing, Watching
+from commerce.models import Bid, Category, Comment, Listing, Watching, UserUploadedImage
 
 
 class CommentSerializer(serializers.ModelSerializer):
@@ -65,6 +65,13 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'listings']
 
 
+class UserUploadedImageSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = UserUploadedImage
+        fields = ['id', 'creator', 'image_url']
+
+
 class WatchingSerializer(serializers.ModelSerializer):
     user_id = serializers.ReadOnlyField(source='user_id.id')
     listing_id = serializers.ReadOnlyField(source='listing_id.id')
@@ -114,8 +121,12 @@ class ListingSerializer(serializers.ModelSerializer):
         source='get_num_of_unique_bids')
     current_bid_price = serializers.ReadOnlyField(source='get_current_price')
     user_is_following = SerializerMethodField(method_name='followed_by_user')
+    image_url = serializers.ImageField(required=False)
+
 
     class Meta:
         model = Listing
+        extra_kwargs = {"category": {"error_messages": {
+            "null": "Please select a category"}}}
         fields = ['id', 'creator', 'creator_id', 'title', 'description', 'start_bid',
                   'creation_date', 'is_active', 'winner', 'category', 'image_url', 'comments', 'bids', 'num_of_bids', 'num_of_unique_bids', 'current_bid_price', 'user_is_following']

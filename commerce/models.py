@@ -3,6 +3,10 @@ from users.models import User
 # Create your models here.
 
 
+def upload_to(instance, filename):
+    return 'images/{filename}'.format(filename=filename)
+
+
 class Category(models.Model):
     name = models.CharField(max_length=45, blank=False, null=False)
 
@@ -10,15 +14,22 @@ class Category(models.Model):
         return f"{self.name}"
 
 
+#Not in Use
+class UserUploadedImage(models.Model):
+    image_url = models.ImageField(upload_to=upload_to, blank=False, null=False)
+    creator = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="images", null=True)
+
+
 class Listing(models.Model):
     creator = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="listings")
     title = models.CharField(
         max_length=80, blank=False, null=False)
-    image_url = models.URLField(blank=True)
+    image_url = models.ImageField(upload_to=upload_to, blank=True, null=True)
     description = models.TextField()
     category = models.ForeignKey(
-        Category, on_delete=models.PROTECT, related_name="listings", blank=True, null=True)
+        Category, on_delete=models.PROTECT, related_name="listings", default=1)
     start_bid = models.DecimalField(max_digits=9, decimal_places=2)
     creation_date = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
