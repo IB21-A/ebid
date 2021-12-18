@@ -86,8 +86,13 @@ class WatchingViewSet(viewsets.ModelViewSet):
     def create(self, request):
         user = request.user
 
-        listing = Listing(id=request.data['listing_id'])
-        instance = Watching(user_id=user, listing_id=listing)
+        try:
+            listing = Listing(id=request.data['listing_id'])
+            instance = Watching(user_id=user, listing_id=listing)
+        except Exception:
+            print(Exception)
+            return Response({"message": "Something went wrong. Check that user and listing exist"}, status=status.HTTP_400_BAD_REQUEST)
+
         watching_listing = get_object_or_None(
             Watching.objects.all(), user_id=request.user.id, listing_id=request.data['listing_id'])
         if watching_listing is None:
