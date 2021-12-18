@@ -25,7 +25,7 @@ class Listing(models.Model):
     creator = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="listings")
     title = models.CharField(
-        max_length=80, blank=False, null=False)
+        max_length=40, blank=False, null=False)
     image_url = models.ImageField(upload_to=upload_to, blank=True, null=True)
     description = models.TextField()
     category = models.ForeignKey(

@@ -14,6 +14,7 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
 
         # Write permissions are only allowed to the owner of the object.
 
+        # print('Permission:', obj.user_id == request.user)
         if hasattr(obj, 'owner'):
             return (obj.owner == request.user)
 
@@ -24,7 +25,6 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
             return (obj.author == request.user)
 
         if hasattr(obj, 'user_id'):
-            print('Permission:', obj.user_id == request.user)
             return (obj.user_id == request.user)
 
 

@@ -23,7 +23,6 @@ class ListingViewSet(viewsets.ModelViewSet):
     parser_classes = (MultiPartParser, FormParser)
     permission_classes = [
         permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
-    permission_classes = [permissions.AllowAny, ]
 
     def perform_create(self, serializer):
         serializer.save(creator=self.request.user)
