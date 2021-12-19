@@ -27,7 +27,8 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
         try:
             user = get_object_or_None(self.queryset, pk=pk)
             if user == None:
-                user = get_object_or_None(self.queryset, username=username)
+                user = get_object_or_None(
+                    self.queryset, username__iexact=username)
 
         except Exception as e:
             return Response(status=status.HTTP_400_BAD_REQUEST)
