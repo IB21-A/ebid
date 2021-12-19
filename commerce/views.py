@@ -81,7 +81,7 @@ class UserImagesViewSet(viewsets.ModelViewSet):
 class WatchingViewSet(viewsets.ModelViewSet):
     queryset = Watching.objects.all()
     serializer_class = WatchingSerializer
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def create(self, request):
         user = request.user
@@ -90,7 +90,6 @@ class WatchingViewSet(viewsets.ModelViewSet):
             listing = Listing(id=request.data['listing_id'])
             instance = Watching(user_id=user, listing_id=listing)
         except Exception:
-            print(Exception)
             return Response({"message": "Something went wrong. Check that user and listing exist"}, status=status.HTTP_400_BAD_REQUEST)
 
         watching_listing = get_object_or_None(
@@ -100,7 +99,6 @@ class WatchingViewSet(viewsets.ModelViewSet):
                 instance=instance, data=request.data)
             if serializer.is_valid():
                 watching_saved = serializer.save()
-                print(watching_saved)
                 return Response({"message": f"{watching_saved.listing_id.id} added to watch list"}, status=status.HTTP_201_CREATED)
             return Response({"message": "Something went wrong"}, status=status.HTTP_400_BAD_REQUEST)
 

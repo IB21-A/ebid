@@ -97,11 +97,13 @@ class ListingSerializer(serializers.ModelSerializer):
         return BidSerializer(bids, many=True).data
 
     def followed_by_user(self, instance):
-        user = self.context['request'].user
-        listing_id = instance.id
+       
         try:
+            user = self.context['request'].user
+            listing_id = instance.id
             return user.watching.filter(listing_id=listing_id).exists()
-        except Exception:
+        except Exception as e:
+            print(e)
             return False
 
     # def followed_by_user(self, instance):

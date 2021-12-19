@@ -1,4 +1,5 @@
 from django.db.models.query import QuerySet
+from django.shortcuts import get_object_or_404
 from django.shortcuts import render
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAuthenticatedOrReadOnly
@@ -7,7 +8,7 @@ from rest_framework import generics, serializers, viewsets
 from rest_framework.response import Response
 from rest_framework import status
 from commerce.permissions import IsOwner, IsOwnerOrReadOnly
-
+from commerce.custom_helpers import get_object_or_None
 from commerce.serializers import WatchingSerializer
 from commerce.models import Watching
 from .models import User
@@ -21,6 +22,18 @@ from rest_framework.decorators import action, permission_classes
 class UserViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
+    def retrieve(self, request, pk=None, username=None):
+        try:
+            user = get_object_or_None(self.queryset, pk=pk)
+            if user == None:
+                user = get_object_or_None(self.queryset, username=username)
+
+        except Exception as e:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        serializer = UserSerializer(user)
+        return Response(serializer.data)
 
     @action(detail=True)
     def watch_list(self, request, pk=None):

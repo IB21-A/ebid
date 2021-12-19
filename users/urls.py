@@ -20,11 +20,12 @@ watch_list = UserWatchList.as_view({
 
 urlpatterns = [
     path('', user_list, name='user_list'),
+    path('token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('<int:pk>/', user_detail, name='user_list'),
+    path('<str:username>/', user_detail, name='user_list'),
     path('<int:pk>/watchlist/', watch_list, name='watch_list'),
     path('register/', RegisterView.as_view(), name='user_register'),
     path('logout/blacklist/', BlacklistTokenUpdateView.as_view(),
          name='blacklist'),
-    path('token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]
