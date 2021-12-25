@@ -97,13 +97,11 @@ class ListingSerializer(serializers.ModelSerializer):
         return BidSerializer(bids, many=True).data
 
     def followed_by_user(self, instance):
-       
         try:
             user = self.context['request'].user
             listing_id = instance.id
             return user.watching.filter(listing_id=listing_id).exists()
         except Exception as e:
-            print(e)
             return False
 
     # def followed_by_user(self, instance):
@@ -123,7 +121,7 @@ class ListingSerializer(serializers.ModelSerializer):
         source='get_num_of_unique_bids')
     current_bid_price = serializers.ReadOnlyField(source='get_current_price')
     user_is_following = SerializerMethodField(method_name='followed_by_user')
-    image_url = serializers.ImageField(required=False)
+    image_url = serializers.ImageField(required=False, use_url=True)
 
 
     class Meta:

@@ -8,15 +8,27 @@ from django.contrib.auth.password_validation import validate_password
 
 class UserSerializer(serializers.ModelSerializer):
 
-    listings = ListingSerializer(many=True)
+    listings = serializers.SerializerMethodField(
+        method_name='sort_listings_by_descending_date')
     comments = CommentSerializer(many=True)
     bids = BidSerializer(many=True)
     # watching = WatchingSerializer(many=True)
+
+    def sort_listings_by_descending_date(self, instance):
+        listings = instance.listings.all().order_by('-creation_date')
+        return ListingSerializer(listings, many=True).data
 
     class Meta:
         model = User
         fields = ['id', 'username', 'first_name',
                   'last_name', 'listings', 'comments', 'bids', 'watching']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # We pass the "upper serializer" context to the "nested one"
+        self.fields['listings'].context.update(self.context)
+        self.fields['comments'].context.update(self.context)
+        self.fields['bids'].context.update(self.context)
 
 
 
