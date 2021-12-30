@@ -1,3 +1,4 @@
+from django.http import request
 from rest_framework import serializers
 
 from commerce.serializers import BidSerializer, CommentSerializer, ListingSerializer, WatchingSerializer
@@ -8,8 +9,7 @@ from django.contrib.auth.password_validation import validate_password
 
 class UserSerializer(serializers.ModelSerializer):
 
-    listings = serializers.SerializerMethodField(
-        method_name='sort_listings_by_descending_date')
+    listings = ListingSerializer(many=True)
     comments = CommentSerializer(many=True)
     bids = BidSerializer(many=True)
     # watching = WatchingSerializer(many=True)
@@ -22,15 +22,6 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ['id', 'username', 'first_name',
                   'last_name', 'listings', 'comments', 'bids', 'watching']
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        # We pass the "upper serializer" context to the "nested one"
-        self.fields['listings'].context.update(self.context)
-        self.fields['comments'].context.update(self.context)
-        self.fields['bids'].context.update(self.context)
-
-
 
 
 class RegisterSerializer(serializers.ModelSerializer):

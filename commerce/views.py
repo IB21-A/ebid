@@ -11,6 +11,7 @@ from .serializers import BidSerializer, CategorySerializer, ListingSerializer, C
 from .permissions import IsOwnerOrReadOnly, IsOwner
 from .custom_helpers import get_object_or_None
 from users.models import User
+from rest_framework import status
 
 # Create your views here.
 
@@ -26,6 +27,12 @@ class ListingViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(creator=self.request.user)
+
+    def retrieve(self, request, *args, **kwargs):
+        queryset = Listing.objects.order_by('-creation_date')
+        serializer = ListingSerializer(
+            queryset, many=True, context={"request": request})
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     #Debug Perform_create only
     # def perform_create(self, serializer):

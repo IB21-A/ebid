@@ -104,14 +104,6 @@ class ListingSerializer(serializers.ModelSerializer):
         except Exception as e:
             return False
 
-    # def followed_by_user(self, instance):
-    #     user_id = self.context['request'].user.id
-    #     listing_id = instance.id
-    #     try:
-    #         return Watching.objects.filter(user_id=user_id, listing_id=listing_id).exists()
-    #     except:
-    #         return False
-
     creator = serializers.ReadOnlyField(source='creator.username')
     creator_id = serializers.ReadOnlyField(source='creator.id')
     comments = CommentSerializer(many=True, required=False)
@@ -130,3 +122,15 @@ class ListingSerializer(serializers.ModelSerializer):
             "null": "Please select a category"}}}
         fields = ['id', 'creator', 'creator_id', 'title', 'description', 'start_bid',
                   'creation_date', 'is_active', 'winner', 'category', 'image_url', 'comments', 'bids', 'num_of_bids', 'num_of_unique_bids', 'current_bid_price', 'user_is_following']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    # def to_representation(self, instance):
+    #     # here we update current serializer's context (access it as self._context)
+    #     # to access parent's context we use parent.context
+    #     # if there is no parent than it's the first serializer in the chain and it doesn't need any context except for itself's
+    #     # for example (after all the checks)
+    #     self._context["request"] = self.parent.context["request"]
+    #     # and that is it! The modified context will be used for serialization as if it was passed as usually
+    #     return super().to_representation(instance)

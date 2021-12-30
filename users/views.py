@@ -33,7 +33,7 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
         except Exception as e:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
-        serializer = UserSerializer(user)
+        serializer = UserSerializer(user, context={'request': request})
         return Response(serializer.data)
 
     @action(detail=True)
