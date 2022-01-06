@@ -17,7 +17,7 @@ from rest_framework import status
 
 
 class ListingViewSet(viewsets.ModelViewSet):
-    search_fields = ['title','description']
+    search_fields = ['title', 'description']
     filter_backends = (filters.SearchFilter,)
     queryset = Listing.objects.order_by('-creation_date')
     serializer_class = ListingSerializer
@@ -28,18 +28,9 @@ class ListingViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(creator=self.request.user)
 
-    def retrieve(self, request, *args, **kwargs):
-        queryset = Listing.objects.order_by('-creation_date')
-        serializer = ListingSerializer(
-            queryset, many=True, context={"request": request})
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-    #Debug Perform_create only
+    # Debug Perform_create only
     # def perform_create(self, serializer):
     #     serializer.save(creator=User.objects.get(pk=1))
-
-
-
 
 
 class CommentViewSet(viewsets.ModelViewSet):
@@ -84,6 +75,7 @@ class UserImagesViewSet(viewsets.ModelViewSet):
     # Debug, DELETE ME
     def perform_create(self, serializer):
         serializer.save(creator=User.objects.get(pk=1))
+
 
 class WatchingViewSet(viewsets.ModelViewSet):
     queryset = Watching.objects.all()
