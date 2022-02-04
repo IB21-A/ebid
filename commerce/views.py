@@ -12,6 +12,7 @@ from .permissions import IsOwnerOrReadOnly, IsOwner
 from .custom_helpers import get_object_or_None
 from users.models import User
 from rest_framework import status
+from commerce_rest.settings import MEDIA_ROOT
 
 # Create your views here.
 
@@ -84,7 +85,6 @@ class WatchingViewSet(viewsets.ModelViewSet):
 
     def create(self, request):
         user = request.user
-
         try:
             listing = Listing(id=request.data['listing_id'])
             instance = Watching(user_id=user, listing_id=listing)

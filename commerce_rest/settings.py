@@ -10,6 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
+import django_heroku
+import cloudinary
 from pathlib import Path
 from datetime import timedelta
 import os
@@ -27,9 +29,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = str(os.getenv('SECRET_KEY'))
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
+DEBUG = False
 
 
 # Application definition
@@ -47,13 +47,16 @@ INSTALLED_APPS = [
     'commerce.apps.CommerceConfig',
     'corsheaders',
     'users.apps.UsersConfig',
+    'cloudinary',
+    'cloudinary_storage'
 
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    "corsheaders.middleware.CorsMiddleware",
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -177,10 +180,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# Whitenoise compression and caching support
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Actual directory user files go to
 MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'mediafiles')
-
 # URL used to access the media
 MEDIA_URL = '/media/'
 
@@ -207,3 +213,18 @@ CORS_ALLOWED_ORIGINS = [
     "http://192.168.56.1:3000",
     "http://172.24.1.151",
 ]
+
+# Cloudinary 
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME' : str(os.getenv('CLOUDINARY_CLOUD_NAME')),
+    'API_KEY' : str(os.getenv('CLOUDINARY_API_KEY')),
+    'API_SECRET' : str(os.getenv('CLOUDINARY_API_SECRET'))
+}
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+# Additional Django Deployment Variables
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+
+# Activate Django-Heroku.
+django_heroku.settings(locals())
