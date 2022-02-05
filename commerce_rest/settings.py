@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 import django_heroku
-import cloudinary
 from pathlib import Path
 from datetime import timedelta
 import os
@@ -40,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'cloudinary_storage'
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework_simplejwt',
@@ -48,7 +48,6 @@ INSTALLED_APPS = [
     'corsheaders',
     'users.apps.UsersConfig',
     'cloudinary',
-    'cloudinary_storage'
 
 ]
 
