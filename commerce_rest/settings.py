@@ -196,26 +196,17 @@ MEDIA_URL = '/media/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 ALLOWED_HOSTS = [
-    '172.24.1.189',
+    'commerce-react-thom.herokuapp.com'
     '127.0.0.1',
-    '192.168.56.1',
-    '192.168.56.1:8000',
     'localhost'
 ]
 
-CORS_ORIGIN_ALLOW_ALL = True
-CORS_ORIGIN_WHITELIST = '*'
-# CORS_ALLOWED_ORIGINS = [
-#     '*',
-#     "http://localhost:8000",
-#     'http://172.24.1.189:3000',
-#     'http://172.24.1.189',
-#     "http://127.0.0.1:8000",
-#     "http://localhost:3000",
-#     "http://192.168.56.1:3000",
-#     "http://192.168.56.1:3000",
-#     "http://172.24.1.151",
-# ]
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
+    "https://commerce-react-front.herokuapp.com"
+]
 
 # Cloudinary 
 CLOUDINARY_STORAGE = {
@@ -226,8 +217,8 @@ CLOUDINARY_STORAGE = {
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # Additional Django Deployment Variables
-CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True
+# CSRF_COOKIE_SECURE = True
+# SESSION_COOKIE_SECURE = True
 
 # Activate Django-Heroku.
 django_heroku.settings(locals())
