@@ -21,12 +21,9 @@ class UserSerializer(serializers.ModelSerializer):
         listings = instance.listings.all().order_by('-creation_date')
         return ListingSerializer(listings, many=True).data
 
-# I need to get a list of watched listings
     def get_watchlist(self, instance):
         watching = list(instance.watching.values_list('listing_id', flat=True))
-        print(watching)
         listings = Listing.objects.filter(pk__in=watching)
-        print(listings)
         return ListingSerializer(listings, many=True).data
 
     class Meta:
