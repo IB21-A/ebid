@@ -72,9 +72,19 @@ class UserUploadedImageSerializer(serializers.ModelSerializer):
         fields = ['id', 'creator', 'image_url']
 
 
+# class WatchingSerializer(serializers.ModelSerializer):
+#     user_id = serializers.ReadOnlyField(source='user_id.id')
+#     listing_id = serializers.ReadOnlyField(source='listing_id.id')
+
+#     class Meta:
+#         model = Watching
+#         fields = ['user_id', 'listing_id']
+
+
 class WatchingSerializer(serializers.ModelSerializer):
     user_id = serializers.ReadOnlyField(source='user_id.id')
     listing_id = serializers.ReadOnlyField(source='listing_id.id')
+
     class Meta:
         model = Watching
         fields = ['user_id', 'listing_id']
@@ -114,7 +124,6 @@ class ListingSerializer(serializers.ModelSerializer):
     current_bid_price = serializers.ReadOnlyField(source='get_current_price')
     user_is_following = SerializerMethodField(method_name='followed_by_user')
     image_url = serializers.ImageField(required=False, use_url=True)
-
 
     class Meta:
         model = Listing

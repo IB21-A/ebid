@@ -62,9 +62,6 @@ class UserWatchList(viewsets.ModelViewSet):
         return Response([auction.listing_id.id for auction in watchlist])
 
 
-
-
-
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     permission_classes = [AllowAny]

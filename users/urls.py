@@ -17,7 +17,6 @@ watch_list = UserWatchList.as_view({
 })
 
 
-
 urlpatterns = [
     path('', user_list, name='user_list'),
     path('token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),

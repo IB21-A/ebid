@@ -28,7 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = str(os.getenv('SECRET_KEY'))
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 
 # Application definition
@@ -198,21 +198,25 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 ALLOWED_HOSTS = [
     'commerce-react-thom.herokuapp.com'
     '127.0.0.1',
-    'localhost'
+    'localhost',
+    'localhost:3000',
+    '127.0.0.1:3000',
 ]
 
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:8000",
     "http://127.0.0.1:8000",
+    "http://127.0.0.1:3000",
+    "http://localhost:3000",
     "https://commerce-react-front.herokuapp.com"
 ]
 
-# Cloudinary 
+# Cloudinary
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME' : str(os.getenv('CLOUDINARY_CLOUD_NAME')),
-    'API_KEY' : str(os.getenv('CLOUDINARY_API_KEY')),
-    'API_SECRET' : str(os.getenv('CLOUDINARY_API_SECRET'))
+    'CLOUD_NAME': str(os.getenv('CLOUDINARY_CLOUD_NAME')),
+    'API_KEY': str(os.getenv('CLOUDINARY_API_KEY')),
+    'API_SECRET': str(os.getenv('CLOUDINARY_API_SECRET'))
 }
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 

@@ -1,8 +1,10 @@
 from django.http import request
 from rest_framework import serializers
+from rest_framework.fields import SerializerMethodField
 
 from commerce.serializers import BidSerializer, CommentSerializer, ListingSerializer, WatchingSerializer
 from .models import User
+from commerce.models import Listing
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth.password_validation import validate_password
 
@@ -12,16 +14,25 @@ class UserSerializer(serializers.ModelSerializer):
     listings = ListingSerializer(many=True)
     comments = CommentSerializer(many=True)
     bids = BidSerializer(many=True)
-    # watching = WatchingSerializer(many=True)
+    watching = WatchingSerializer(many=True)
+    watchlist = SerializerMethodField()
 
     def sort_listings_by_descending_date(self, instance):
         listings = instance.listings.all().order_by('-creation_date')
         return ListingSerializer(listings, many=True).data
 
+# I need to get a list of watched listings
+    def get_watchlist(self, instance):
+        watching = list(instance.watching.values_list('listing_id', flat=True))
+        print(watching)
+        listings = Listing.objects.filter(pk__in=watching)
+        print(listings)
+        return ListingSerializer(listings, many=True).data
+
     class Meta:
         model = User
         fields = ['id', 'username', 'first_name',
-                  'last_name', 'listings', 'comments', 'bids', 'watching']
+                  'last_name', 'listings', 'comments', 'bids', 'watching', 'watchlist']
 
 
 class RegisterSerializer(serializers.ModelSerializer):
