@@ -13,14 +13,17 @@ from .custom_helpers import get_object_or_None
 from users.models import User
 from rest_framework import status
 from commerce_rest.settings import MEDIA_ROOT
-
+import django_filters.rest_framework
 # Create your views here.
 
 
 class ListingViewSet(viewsets.ModelViewSet):
-    search_fields = ['title', 'description']
-    filter_backends = (filters.SearchFilter,)
     queryset = Listing.objects.order_by('-creation_date')
+    search_fields = ['title', 'description', 'category__name']
+    # filter_backends = (filters.SearchFilter,)
+    filter_backends = [filters.SearchFilter,
+                       django_filters.rest_framework.DjangoFilterBackend]
+    filterset_fields = ['category', 'is_active']
     serializer_class = ListingSerializer
     parser_classes = (MultiPartParser, FormParser)
     permission_classes = [
