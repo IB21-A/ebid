@@ -16,6 +16,7 @@ class UserSerializer(serializers.ModelSerializer):
     bids = BidSerializer(many=True)
     watching = WatchingSerializer(many=True)
     watchlist = SerializerMethodField()
+    won = ListingSerializer(many=True)
 
     def sort_listings_by_descending_date(self, instance):
         listings = instance.listings.all().order_by('-creation_date')
@@ -29,7 +30,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'username', 'first_name',
-                  'last_name', 'listings', 'comments', 'bids', 'watching', 'watchlist']
+                  'last_name', 'listings', 'comments', 'bids', 'watching', 'watchlist', 'won']
 
 
 class RegisterSerializer(serializers.ModelSerializer):
