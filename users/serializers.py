@@ -24,7 +24,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     def get_watchlist(self, instance):
         watching = list(instance.watching.values_list('listing_id', flat=True))
-        listings = Listing.objects.filter(pk__in=watching)
+        listings = Listing.objects.filter(is_active=True, pk__in=watching, )
         return ListingSerializer(listings, many=True).data
 
     class Meta:

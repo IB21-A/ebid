@@ -203,6 +203,9 @@ ALLOWED_HOSTS = [
     'localhost',
     'localhost:3000',
     '127.0.0.1:3000',
+    "172.24.1.190",
+    "0.0.0.0"
+
 ]
 
 
@@ -210,8 +213,10 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:8000",
     "http://127.0.0.1:8000",
     "http://127.0.0.1:3000",
+    "http://172.24.1.190:3000",
     "http://localhost:3000",
-    "https://commerce-react-front.herokuapp.com"
+    "https://commerce-react-front.herokuapp.com",
+
 ]
 
 # Cloudinary
