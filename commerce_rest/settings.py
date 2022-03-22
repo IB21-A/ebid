@@ -85,7 +85,7 @@ ROOT_URLCONF = 'commerce_rest.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'frontend/build')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -176,6 +176,10 @@ USE_L10N = True
 
 USE_TZ = True
 
+# React Static Files
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'frontend/build/static')
+]
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
@@ -205,8 +209,8 @@ ALLOWED_HOSTS = [
 
 
 CORS_ALLOWED_ORIGINS = [
-    "http://127.0.0.1:3000",
-    "http://localhost:3000",
+    "http://127.0.0.1:8000",
+    "http://localhost:8000",
     "https://ebid-thom.herokuapp.com"
 ]
 
@@ -256,6 +260,7 @@ LOGGING = {
         }
     }
 }
+
 
 DEBUG_PROPAGATE_EXCEPTIONS = True
 COMPRESS_ENABLED = os.environ.get('COMPRESS_ENABLED', False)
