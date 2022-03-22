@@ -267,4 +267,4 @@ COMPRESS_ENABLED = os.environ.get('COMPRESS_ENABLED', False)
 #############
 
 # Activate Django-Heroku.
-django_heroku.settings(locals(), logging=False)
+django_heroku.settings(locals())
