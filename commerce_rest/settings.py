@@ -28,7 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = str(os.getenv('SECRET_KEY'))
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 
 # Application definition
@@ -198,25 +198,16 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 ALLOWED_HOSTS = [
-    'commerce-react-thom.herokuapp.com'
-    '127.0.0.1',
-    'localhost',
-    'localhost:3000',
-    '127.0.0.1:3000',
-    "172.24.1.190",
-    "0.0.0.0"
+    'ebid-thom.herokuapp.com',
+    '127.0.0.1'
 
 ]
 
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:8000",
-    "http://127.0.0.1:8000",
     "http://127.0.0.1:3000",
-    "http://172.24.1.190:3000",
     "http://localhost:3000",
-    "https://commerce-react-front.herokuapp.com",
-
+    "https://ebid-thom.herokuapp.com"
 ]
 
 # Cloudinary
