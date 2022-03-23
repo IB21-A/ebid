@@ -32,3 +32,5 @@ Some troubles I faced and how I solved them:
 
 - [Return a Boolean Value in Django REST Serializers Based on Related Models](https://dev.to/thomz/how-to-return-a-boolean-value-in-django-rest-serializers-based-on-related-models-2bm9)
 - [Uploading Images to Django REST Framework from Forms in React](https://dev.to/thomz/uploading-images-to-django-rest-framework-from-forms-in-react-3jhj)
+
+### [View this Project on Heroku](https://ebid-thom.herokuapp.com/)
