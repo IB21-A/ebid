@@ -73,12 +73,8 @@ class UserImagesViewSet(viewsets.ModelViewSet):
     permission_classes = [
         permissions.AllowAny]
 
-    # def perform_create(self, serializer):
-    #     serializer.save(creator=self.request.user)
-
-    # Debug, DELETE ME
     def perform_create(self, serializer):
-        serializer.save(creator=User.objects.get(pk=1))
+        serializer.save(creator=self.request.user)
 
 
 class WatchingViewSet(viewsets.ModelViewSet):
